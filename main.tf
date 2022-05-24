@@ -17,6 +17,37 @@ provider "auth0" {
   client_secret = var.auth0_client_secret
 }
 
+
+# To connect the code below with the default connection created on tenant creation run:
+# $ terraform import auth0_connection.my_connection {CONN_ID}
+
+# Configure default connection
+resource "auth0_connection" "my_connection" {
+  name = "Username-Password-Authentication"
+  strategy = "auth0"
+  enabled_clients = [auth0_client.my_client.id]
+
+  options {
+    disable_signup = true
+
+    password_policy = "fair"
+    password_history {
+      enable = true
+      size = 5
+    }
+    password_no_personal_info {
+      enable = true
+    }
+    password_dictionary {
+      enable = true
+    }
+    brute_force_protection = "true"
+    password_complexity_options {
+      min_length = 8
+    }
+  }
+}
+
 # Create API
 resource "auth0_resource_server" "my_resource_server" {
   name        = "CHP Api"
@@ -112,35 +143,6 @@ resource "auth0_role" "my_role" {
   }
 }
 
-# To connect the code below with the default connection created on tenant creation run:
-# $ terraform import auth0_connection.my_connection {CONN_ID}
-
-# Configure default connection
-resource "auth0_connection" "my_connection" {
-  name = "Username-Password-Authentication"
-  strategy = "auth0"
-  enabled_clients = [auth0_client.my_client.id]
-
-  options {
-    disable_signup = true
-
-    password_policy = "fair"
-    password_history {
-      enable = true
-      size = 5
-    }
-    password_no_personal_info {
-      enable = true
-    }
-    password_dictionary {
-      enable = true
-    }
-    brute_force_protection = "true"
-    password_complexity_options {
-      min_length = 8
-    }
-  }
-}
 
 # Security
 resource "auth0_attack_protection" "attack_protection" {
