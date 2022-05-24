@@ -17,7 +17,7 @@ provider "auth0" {
   client_secret = var.auth0_client_secret
 }
 
-# Provision API
+# Create API
 resource "auth0_resource_server" "my_resource_server" {
   name        = "CHP Api"
   identifier  = "https://api.example.com/"
@@ -40,7 +40,7 @@ resource "auth0_resource_server" "my_resource_server" {
   token_lifetime                                  = 8600
 }
 
-# Provision Application
+# Create Application
 resource "auth0_client" "my_client" {
   name = "Vertical Application"
   description = "Test Applications Long Description"
@@ -142,7 +142,7 @@ resource "auth0_connection" "my_connection" {
   }
 }
 
-# Sercurity
+# Security
 resource "auth0_attack_protection" "attack_protection" {
   suspicious_ip_throttling {
     enabled   = true
